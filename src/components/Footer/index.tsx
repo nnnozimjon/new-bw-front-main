@@ -21,9 +21,18 @@ import {
 } from "react-icons/fa";
 import { IoHomeOutline, IoMail } from "react-icons/io5";
 import { MdOutlineShoppingCart } from "react-icons/md";
+import { RootState } from "@/store/store";
+import { useSelector } from "react-redux";
 
 export default function Footer() {
   const redirect = (href: string) => window.location.replace(href)
+    const favorites = useSelector(
+    (state: RootState) => state?.favorites?.favorites
+  );
+
+  const cart: any[] = useSelector((state: RootState) => state?.cart?.cart);
+
+
   return (
     <footer className={classes.footer}>
       <Container className={""}>
@@ -109,9 +118,10 @@ export default function Footer() {
             onClick={() => redirect('/favorites')}
           >
             <Indicator
+            disabled={favorites?.length === 0}
               processing
               radius={"lg"}
-              label="2"
+              label={favorites?.length}
               inline
               size={16}
               offset={3}
@@ -136,9 +146,10 @@ export default function Footer() {
             onClick={() => redirect('/cart')}
           >
             <Indicator
+            disabled={cart?.length === 0}
               processing
               radius={"lg"}
-              label="2"
+              label={cart?.length}
               inline
               size={16}
               offset={3}
