@@ -2,7 +2,14 @@ import { useLoginMutation, useRegistrationMutation } from "@/store";
 import { pullCart, pushCart } from "@/store/actions/cart.actions";
 import { loginSuccess } from "@/store/slices/userSlice";
 import { RootState, useAppDispatch } from "@/store/store";
-import { Button, Flex, InputBase, Modal, Text } from "@mantine/core";
+import {
+  Button,
+  Flex,
+  InputBase,
+  LoadingOverlay,
+  Modal,
+  Text,
+} from "@mantine/core";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
@@ -24,8 +31,10 @@ export const LoginModal = ({ onClose, opened }: IProps) => {
 
   const [register, { isSuccess }] = useRegistrationMutation();
 
-  const [login, { isSuccess: isSuccessLogin, data: dataLogin }] =
-    useLoginMutation();
+  const [
+    login,
+    { isSuccess: isSuccessLogin, data: dataLogin, isLoading: isLoadingLogin },
+  ] = useLoginMutation();
 
   const handleRegister = () => {
     let cleanedPhoneNumber = phoneNumber.replace(/\D/g, "");
@@ -75,6 +84,8 @@ export const LoginModal = ({ onClose, opened }: IProps) => {
       pullCartFunc();
       window.location.reload();
     }
+
+    
   }, [isSuccessLogin]);
 
   return (
@@ -165,6 +176,11 @@ export const LoginModal = ({ onClose, opened }: IProps) => {
           </Button>
         </div>
       )}
+
+      <LoadingOverlay
+        visible={isLoadingLogin}
+        overlayProps={{ radius: "sm", blur: 2 }}
+      />
     </Modal>
   );
 };
