@@ -27,7 +27,7 @@ export default function Page() {
             imagePath={product?.imagePath}
             price={product?.price}
             isNew={product?.isNew}
-            productName={product?.name}
+            productName={product?.name || product?.productName}
             rating={product?.rating}
           />
         ))}

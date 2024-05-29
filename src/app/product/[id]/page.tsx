@@ -73,8 +73,8 @@ export default function Page() {
   }, [isSuccess]);
 
   const handleAddToCart = useCallback(async () => {
-    if (user.isAuth) dispatch(addToCartService({...product, productName: product?.name}));
-    else dispatch(addToCart({...product, productName: product?.name}));
+    if (user.isAuth) dispatch(addToCartService({...product, productName: product?.name, imagePath: product?.images[0]?.imagePath}));
+    else dispatch(addToCart({...product, productName: product?.name, imagePath: product?.images[0]?.imagePath}));
   }, [dispatch, product, user.isAuth]);
 
   const handleIncreaseCount = useCallback(async () => {
@@ -103,7 +103,7 @@ export default function Page() {
   }, [existingItem?.count, user.isAuth, dispatch, product?.id]);
 
   const handleAddToFavorites = () => {
-    dispatch(addToFavorites(product));
+    dispatch(addToFavorites({...product, imagePath: product?.images[0]?.imagePath}));
   };
 
   const handleRemoveFromFavorites = () => {

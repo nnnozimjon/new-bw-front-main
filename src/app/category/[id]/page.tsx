@@ -6,6 +6,7 @@ import { useGetAllCategoryQuery, useGetProductByHideQuery } from "@/store";
 import { ObjectToQuery } from "@/utils/query";
 import { IProduct } from "@/utils/types";
 import {
+  Accordion,
   Flex,
   Grid,
   Paper,
@@ -78,8 +79,6 @@ export default function Page() {
     (item) => item?.id === categoryId
   );
 
-  console.log(subs);
-
   const perPage = [
     {
       label: "20 на страницу",
@@ -131,13 +130,24 @@ export default function Page() {
       <Text className="text-[1.75rem] text-[#212121] my-[30px] text-center">
         {subs?.name}
       </Text>
-      <Flex gap={"md"} className="w-full" align={"center"} justify={"center"} wrap={'wrap'}>
+      <Flex
+        gap={"md"}
+        className="w-full"
+        align={"center"}
+        justify={"center"}
+        wrap={"wrap"}
+      >
         {subs?.subCategories?.map((cat: any, index: number) => (
           <div
             key={index}
             className="rounded-full p-2 shadow-md select-none cursor-pointer w-fit text-center shrink-0"
           >
-            <a href={'/category/' + cat?.id} className="no-underline text-black hover:text-blue-500">{cat?.name}</a>
+            <a
+              href={"/category/" + cat?.id}
+              className="no-underline text-black hover:text-blue-500"
+            >
+              {cat?.name}
+            </a>
           </div>
         ))}
       </Flex>
@@ -175,6 +185,35 @@ export default function Page() {
             <Text className="text-[#212121] text-[1.125rem] font-semibold">
               Подкатегории
             </Text>
+
+            <Accordion>
+              {subs?.subCategories?.map((cat: any, index: number) => (
+                <Accordion.Item key={index} value={cat?.name}>
+                  <Accordion.Control>
+                    <a
+                      key={index}
+                      href={"/category/" + cat?.id}
+                      className="no-underline text-black hover:text-blue-500"
+                    >
+                      {cat?.name}
+                    </a>
+                  </Accordion.Control>
+                  <Accordion.Panel>
+                    <Flex gap={"sm"} direction={"column"}>
+                      {cat?.subCategories?.map((item: any, index: number) => (
+                        <a
+                          key={index}
+                          href={"/category/" + item?.id}
+                          className="no-underline text-black hover:text-blue-500"
+                        >
+                          {item?.name}
+                        </a>
+                      ))}
+                    </Flex>
+                  </Accordion.Panel>
+                </Accordion.Item>
+              ))}
+            </Accordion>
           </Paper>
         </Grid.Col>
         <Grid.Col span={{ md: 9.5, sm: 12 }}>

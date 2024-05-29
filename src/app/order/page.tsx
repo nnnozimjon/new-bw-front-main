@@ -14,6 +14,7 @@ import {
   Flex,
   Grid,
   Image,
+  LoadingOverlay,
   Paper,
   Radio,
   SimpleGrid,
@@ -60,12 +61,12 @@ export default function Page() {
     }, 0);
   };
 
-  const [createOrder, { isSuccess }] = useCreateOrderMutation();
+  const [createOrder, { isSuccess, isLoading }] = useCreateOrderMutation();
 
   useEffect(() => {
-    if(isSuccess) {
-      dispatch(clearCart())
-      redirect('/order-list')
+    if (isSuccess) {
+      dispatch(clearCart());
+      redirect("/order-list");
     }
   }, [isSuccess]);
 
@@ -197,6 +198,12 @@ export default function Page() {
           </Button>
         </Grid.Col>
       </Grid>
+      <LoadingOverlay
+        className="h-screen w-screen fixed overflow-hidden scrollbar-hide"
+        visible={isLoading}
+        zIndex={1000}
+        overlayProps={{ radius: "sm", blur: 2 }}
+      />
     </div>
   );
 }
