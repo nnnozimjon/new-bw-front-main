@@ -29,11 +29,17 @@ export const LoginModal = ({ onClose, opened }: IProps) => {
 
   const [view, setView] = useState<view>("login");
 
-  const [register, { isSuccess }] = useRegistrationMutation();
+  const [register, { isSuccess, isLoading: isLoadingRegister }] =
+    useRegistrationMutation();
 
   const [
     login,
-    { isSuccess: isSuccessLogin, data: dataLogin, isLoading: isLoadingLogin },
+    {
+      isSuccess: isSuccessLogin,
+      data: dataLogin,
+      isLoading: isLoadingLogin,
+      isError: isErrorLogin,
+    },
   ] = useLoginMutation();
 
   const handleRegister = () => {
@@ -84,8 +90,6 @@ export const LoginModal = ({ onClose, opened }: IProps) => {
       pullCartFunc();
       window.location.reload();
     }
-
-    
   }, [isSuccessLogin]);
 
   return (
@@ -110,6 +114,10 @@ export const LoginModal = ({ onClose, opened }: IProps) => {
             onChange={(e) => setPhoneNumber(e.target.value)}
           />
           <br />
+          <Text className="text-[0.875rem] text-[red] mb-2">
+            {isErrorLogin &&
+              "Что-то пошло не так. Пользователь может быть не зарегистрирован"}
+          </Text>
           <Flex gap={"md"} direction={"column"}>
             <Button className="h-[40px] w-full" onClick={handleLogin}>
               Войти
@@ -179,6 +187,10 @@ export const LoginModal = ({ onClose, opened }: IProps) => {
 
       <LoadingOverlay
         visible={isLoadingLogin}
+        overlayProps={{ radius: "sm", blur: 2 }}
+      />
+      <LoadingOverlay
+        visible={isLoadingRegister}
         overlayProps={{ radius: "sm", blur: 2 }}
       />
     </Modal>
