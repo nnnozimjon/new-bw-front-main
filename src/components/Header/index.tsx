@@ -26,7 +26,7 @@ import { TbLogout } from "react-icons/tb";
 import { GoChecklist } from "react-icons/go";
 import { LoginModal } from "@/modals/login-modal";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState } from "@/store/store";
+import { RootState, useAppDispatch } from "@/store/store";
 import { logout } from "@/store/slices/userSlice";
 
 export interface ICategory {
@@ -105,20 +105,10 @@ const drawerLinks: IDrawerLinks[] = [
       },
     ],
   },
-  {
-    group: "Выход",
-    links: [
-      {
-        label: "Выйти из аккаунта",
-        icon: <TbLogout size={"18px"} />,
-        href: "",
-      },
-    ],
-  },
 ];
 
 export default function Header() {
-  const dispatch = useDispatch();
+  const dispatch = useAppDispatch();
 
   const favorites = useSelector(
     (state: RootState) => state?.favorites?.favorites
@@ -142,8 +132,9 @@ export default function Header() {
   );
 
   const redirect = (href: string) => window.location.replace(href);
-  const logoutFunc = () => dispatch(logout());
-
+  const logoutFunc = () => {
+    dispatch(logout());
+  };
   useEffect(() => {
     if (isSuccess) {
       setCategories(data);
@@ -360,6 +351,24 @@ export default function Header() {
               <br />
             </Fragment>
           ))}
+
+          <Text className="text-[1.125rem] font-semibold text-white">
+            Выход
+          </Text>
+          <NavLink
+            variant="filled"
+            bg={"white"}
+            onClick={logoutFunc}
+            label={
+              <Flex align={"center"} justify={"center"} gap={"sm"}>
+                <TbLogout size={"18px"} />
+                <Text className="text-[1.125rem] text-[#212121]">
+                  Выйти из аккаунта
+                </Text>
+              </Flex>
+            }
+            className="rounded-lg text-center h-[50px] mb-4"
+          />
         </Drawer.Body>
       </Drawer>
 
