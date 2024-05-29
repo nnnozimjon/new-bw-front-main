@@ -21,6 +21,7 @@ import {
   Text,
   Textarea,
 } from "@mantine/core";
+import Head from "next/head";
 import { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -87,6 +88,10 @@ export default function Page() {
 
   return (
     <div>
+      <Head>
+        <title>Оформить заказ</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Text className="text-[1.75rem] text-[#212121] my-[30px] text-center">
         Оформить заказ
       </Text>

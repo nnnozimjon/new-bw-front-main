@@ -31,6 +31,7 @@ import {
   Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import Head from "next/head";
 import { useParams } from "next/navigation";
 import { Fragment, useCallback, useEffect, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
@@ -73,8 +74,22 @@ export default function Page() {
   }, [isSuccess]);
 
   const handleAddToCart = useCallback(async () => {
-    if (user.isAuth) dispatch(addToCartService({...product, productName: product?.name, imagePath: product?.images[0]?.imagePath}));
-    else dispatch(addToCart({...product, productName: product?.name, imagePath: product?.images[0]?.imagePath}));
+    if (user.isAuth)
+      dispatch(
+        addToCartService({
+          ...product,
+          productName: product?.name,
+          imagePath: product?.images[0]?.imagePath,
+        })
+      );
+    else
+      dispatch(
+        addToCart({
+          ...product,
+          productName: product?.name,
+          imagePath: product?.images[0]?.imagePath,
+        })
+      );
   }, [dispatch, product, user.isAuth]);
 
   const handleIncreaseCount = useCallback(async () => {
@@ -103,16 +118,20 @@ export default function Page() {
   }, [existingItem?.count, user.isAuth, dispatch, product?.id]);
 
   const handleAddToFavorites = () => {
-    dispatch(addToFavorites({...product, imagePath: product?.images[0]?.imagePath}));
+    dispatch(
+      addToFavorites({ ...product, imagePath: product?.images[0]?.imagePath })
+    );
   };
 
   const handleRemoveFromFavorites = () => {
     dispatch(removeFromFavorites(product));
   };
 
-
   return (
     <div>
+      <Head>
+        <title>{product?.name}</title>
+      </Head>
       <Grid>
         <Grid.Col span={{ md: 8, sm: 12 }}>
           <Text className="text-[2rem] font-semibold text-[#212121]">

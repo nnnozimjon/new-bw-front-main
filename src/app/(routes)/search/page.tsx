@@ -6,6 +6,7 @@ import { useGetProductByHideQuery } from "@/store";
 import { ObjectToQuery } from "@/utils/query";
 import { IProduct } from "@/utils/types";
 import { Flex, Select, SimpleGrid, Skeleton, Text } from "@mantine/core";
+import Head from "next/head";
 import { useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -93,6 +94,9 @@ export default function Page() {
 
   return (
     <div>
+      <Head>
+        <title>{searchText || '""'} – купить в большой стирке</title>
+      </Head>
       <Text className="text-[1.75rem] text-[#212121] my-[30px] text-center">
         Результаты поиска {products?.length}
       </Text>

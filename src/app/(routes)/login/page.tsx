@@ -5,6 +5,7 @@ import { pullCart, pushCart } from "@/store/actions/cart.actions";
 import { loginSuccess } from "@/store/slices/userSlice";
 import { RootState, useAppDispatch } from "@/store/store";
 import { Button, Grid, InputBase, Paper, Text } from "@mantine/core";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -60,6 +61,10 @@ export default function Page() {
 
   return (
     <div>
+      <Head>
+        <title>Вход</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Text className="text-[1.75rem] text-[#212121] my-[30px]">
         Авторизация
       </Text>

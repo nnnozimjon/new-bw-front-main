@@ -4,6 +4,7 @@ import { EmptyPlaceholder } from "@/components";
 import { useGetUserOrdersQuery } from "@/store";
 import { redirect } from "@/utils";
 import { Accordion, Button, Grid, Paper, Table, Text } from "@mantine/core";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 
 export default function Page() {
@@ -56,6 +57,10 @@ export default function Page() {
 
   return (
     <div>
+      <Head>
+        <title>Оформить заказ</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Text className="text-[1.75rem] text-[#212121] my-[30px]">
         Список ваших заказов
       </Text>

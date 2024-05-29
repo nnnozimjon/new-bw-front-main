@@ -14,6 +14,7 @@ import {
   SimpleGrid,
   Text,
 } from "@mantine/core";
+import Head from "next/head";
 import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
@@ -124,10 +125,12 @@ export default function Page() {
     }
   }, [isSuccessUpdateProfile]);
 
-
-
   return (
     <div>
+      <Head>
+        <title>Личный кабинет</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Container>
         <Paper shadow="xs" p="xl" withBorder>
           <Text className="text-[#212121] font-semibold text-[1.5rem]">

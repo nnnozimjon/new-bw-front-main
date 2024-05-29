@@ -1,13 +1,8 @@
 "use client";
 
 import { useGetOrderByIdQuery } from "@/store";
-import {
-  Container,
-  Grid,
-  Paper,
-  Text,
-  Textarea,
-} from "@mantine/core";
+import { Container, Grid, Paper, Text, Textarea } from "@mantine/core";
+import Head from "next/head";
 import { useParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
@@ -26,6 +21,10 @@ export default function Page() {
 
   return (
     <div>
+      <Head>
+        <title>Заказ {orderId}</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Container size={"md"}>
         <Paper withBorder shadow="md" className="p-4">
           <Grid>
@@ -80,12 +79,20 @@ export default function Page() {
           <Text className="text-[1.125rem] font-semibold my-4">
             Комментарий к заказу:
           </Text>
-          <Textarea className="border border-solid rounded-md" classNames={{input: 'border-none'}} readOnly value={order?.description} />
+          <Textarea
+            className="border border-solid rounded-md"
+            classNames={{ input: "border-none" }}
+            readOnly
+            value={order?.description}
+          />
           <Text className="text-[1.125rem] font-semibold my-4">
             Список товаров:
           </Text>
           {order?.type?.map((order: any, index: number) => (
-            <div className="border border-solid rounded-md p-4 mt-3" key={index}>
+            <div
+              className="border border-solid rounded-md p-4 mt-3"
+              key={index}
+            >
               <Grid>
                 <Grid.Col span={{ sm: 12, md: 6 }}>
                   Наименование товара:

@@ -22,6 +22,7 @@ import {
   Paper,
   Text,
 } from "@mantine/core";
+import Head from "next/head";
 import { useCallback } from "react";
 import { FaMinus, FaPlus } from "react-icons/fa";
 import { useSelector } from "react-redux";
@@ -78,6 +79,10 @@ export default function Page() {
 
   return (
     <div>
+      <Head>
+        <title>Корзина</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Text className="text-[1.75rem] text-[#212121] my-[30px]">Корзина</Text>
       {cart?.length === 0 && <EmptyPlaceholder label="Корзина пусто" />}
       {cart.length !== 0 && (

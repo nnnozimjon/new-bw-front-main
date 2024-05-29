@@ -19,6 +19,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Pagination } from "@/components/Pagination";
 import { ICategory } from "@/components/Header";
+import Head from "next/head";
 
 export default function Page() {
   const params = useParams();
@@ -127,6 +128,9 @@ export default function Page() {
 
   return (
     <div>
+      <Head>
+        <title>{subs?.name || '""'} – купить в большой стирке</title>
+      </Head>
       <Text className="text-[1.75rem] text-[#212121] my-[30px] text-center">
         {subs?.name}
       </Text>

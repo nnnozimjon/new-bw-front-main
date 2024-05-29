@@ -5,6 +5,7 @@ import EmptyPlaceholder from "@/components/EmptyPlaceholder";
 import { SimpleGrid, Text } from "@mantine/core";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
+import Head from "next/head";
 
 export default function Page() {
   const favorites = useSelector(
@@ -13,6 +14,10 @@ export default function Page() {
 
   return (
     <div>
+      <Head>
+        <title>Избранные продукты</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+      </Head>
       <Text className="text-[1.75rem] text-[#212121] my-[30px]">Избранное</Text>
       {favorites?.length === 0 && (
         <EmptyPlaceholder label="У вас пока нет избранных товаров" />
