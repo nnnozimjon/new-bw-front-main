@@ -1,0 +1,1 @@
+export const baseUrl = "https://api.chistayaliniya.tj/api"
