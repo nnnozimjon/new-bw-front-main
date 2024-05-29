@@ -1,5 +1,6 @@
 "use client";
 
+import { LoginModal } from "@/modals/login-modal";
 import {
   clearCart,
   useCreateOrderMutation,
@@ -21,15 +22,21 @@ import {
   Text,
   Textarea,
 } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import Head from "next/head";
 import { Fragment, useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
 export default function Page() {
   const dispatch = useAppDispatch();
+
   const cart = useSelector((state: RootState) => state?.cart?.cart);
+  const user = useSelector((state: RootState) => state?.user?.user);
 
   const [text, setText] = useState("");
+
+  const [openedModal, { open: openModal, close: closeModal }] =
+    useDisclosure(false);
 
   const [selectedPayment, setSelectedPayment] = useState<any>({});
   const [selectedDelivery, setSelectedDelivery] = useState<any>({});
@@ -79,6 +86,10 @@ export default function Page() {
   }, [isSuccess, isError]);
 
   const handleCreateOrder = () => {
+    if (!user.isAuth) {
+      return openModal();
+    }
+
     createOrder({
       DeliveryTypeId: selectedDelivery?.id,
       PaymentTypeId: selectedPayment?.id,
@@ -204,8 +215,12 @@ export default function Page() {
           ))}
 
           <br />
-          {errorText && <Text className="text-[red] p-2">{errorText}</Text>}
-          <Button className="w-full h-[50px]" onClick={handleCreateOrder}>
+          {errorText && (
+            <Text className="text-[red] p-2">
+              {errorText === "Cart is empty" ? "Корзина пусто!" : errorText}
+            </Text>
+          )}
+          <Button loading={isLoading} className="w-full h-[50px]" onClick={handleCreateOrder}>
             Оформить заказ
           </Button>
         </Grid.Col>
@@ -216,6 +231,7 @@ export default function Page() {
         zIndex={1000}
         overlayProps={{ radius: "sm", blur: 2 }}
       />
+      <LoginModal onClose={closeModal} opened={openedModal} />
     </div>
   );
 }
