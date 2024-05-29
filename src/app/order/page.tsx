@@ -61,14 +61,21 @@ export default function Page() {
     }, 0);
   };
 
-  const [createOrder, { isSuccess, isLoading }] = useCreateOrderMutation();
+  const [errorText, setErrorText] = useState("");
+
+  const [createOrder, { isSuccess, isLoading, error, isError }] =
+    useCreateOrderMutation();
 
   useEffect(() => {
     if (isSuccess) {
       dispatch(clearCart());
       redirect("/order-list");
     }
-  }, [isSuccess]);
+
+    if (isError) {
+      setErrorText((error as any)?.data?.Message);
+    }
+  }, [isSuccess, isError]);
 
   const handleCreateOrder = () => {
     createOrder({
@@ -192,7 +199,7 @@ export default function Page() {
           ))}
 
           <br />
-
+          {errorText && <Text className="text-[red] p-2">{errorText}</Text>}
           <Button className="w-full h-[50px]" onClick={handleCreateOrder}>
             Оформить заказ
           </Button>
