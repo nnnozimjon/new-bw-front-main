@@ -58,21 +58,21 @@ export const LoginModal = ({ onClose, opened }: IProps) => {
     if (isSuccessLogin) {
       dispatch(loginSuccess(dataLogin));
       const pullCartFunc = async () => {
-        if (cart.length)
+        if (cart?.length !== 0) {
           await dispatch(
             pushCart(
               cart.map((item: any) => ({
-                productId: item.productId,
+                productId: item?.id || item?.productId,
                 count: item.count,
               }))
             )
           );
+        }
 
         await dispatch(pullCart());
       };
 
       pullCartFunc();
-
       window.location.reload();
     }
   }, [isSuccessLogin]);

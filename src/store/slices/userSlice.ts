@@ -56,7 +56,6 @@ const userSlice = createSlice({
       state.user.isAuth = false;
       if (typeof window !== "undefined") {
         localStorage.removeItem("bw-states");
-        localStorage.clear()
       }
       window.location.reload();
     },

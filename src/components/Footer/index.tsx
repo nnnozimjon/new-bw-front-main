@@ -20,18 +20,26 @@ import {
   FaRegUser,
 } from "react-icons/fa";
 import { IoHomeOutline, IoMail } from "react-icons/io5";
-import { MdOutlineShoppingCart } from "react-icons/md";
+import { MdLogin, MdOutlineShoppingCart } from "react-icons/md";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
+import { LoginModal } from "@/modals/login-modal";
+import { useDisclosure } from "@mantine/hooks";
 
 export default function Footer() {
-  const redirect = (href: string) => window.location.replace(href)
-    const favorites = useSelector(
+  const redirect = (href: string) => window.location.replace(href);
+  const favorites = useSelector(
     (state: RootState) => state?.favorites?.favorites
   );
 
+  const [openedModal, { open: openModal, close: closeModal }] =
+    useDisclosure(false);
+
   const cart: any[] = useSelector((state: RootState) => state?.cart?.cart);
 
+  const isAuthorized = useSelector(
+    (state: RootState) => state?.user.user.isAuth
+  );
 
   return (
     <footer className={classes.footer}>
@@ -105,7 +113,7 @@ export default function Footer() {
           <Grid.Col
             span={3}
             className="flex items-center justify-center flex-col !cursor-pointer"
-            onClick={() => redirect('/')}
+            onClick={() => redirect("/")}
           >
             <IoHomeOutline size={24} className="cursor-pointer" />
             <label className="text-[#212121] text-[0.75rem] cursor-pointer select-none">
@@ -115,10 +123,10 @@ export default function Footer() {
           <Grid.Col
             span={3}
             className="flex items-center justify-center flex-col !cursor-pointer"
-            onClick={() => redirect('/favorites')}
+            onClick={() => redirect("/favorites")}
           >
             <Indicator
-            disabled={favorites?.length === 0}
+              disabled={favorites?.length === 0}
               processing
               radius={"lg"}
               label={favorites?.length}
@@ -143,10 +151,10 @@ export default function Footer() {
           <Grid.Col
             span={3}
             className="flex items-center justify-center flex-col !cursor-pointer"
-            onClick={() => redirect('/cart')}
+            onClick={() => redirect("/cart")}
           >
             <Indicator
-            disabled={cart?.length === 0}
+              disabled={cart?.length === 0}
               processing
               radius={"lg"}
               label={cart?.length}
@@ -168,18 +176,32 @@ export default function Footer() {
               Корзина
             </label>
           </Grid.Col>
-          <Grid.Col
-            span={3}
-            className="flex items-center justify-center flex-col !cursor-pointer"
-            onClick={() => redirect('/cabinet')}
-          >
-            <FaRegUser size={24} className="cursor-pointer" />
-            <label className="text-[#212121] text-[0.75rem] cursor-pointer select-none">
-              Профиль
-            </label>
-          </Grid.Col>
+          {isAuthorized ? (
+            <Grid.Col
+              span={3}
+              className="flex items-center justify-center flex-col !cursor-pointer"
+              onClick={() => redirect("/cabinet")}
+            >
+              <FaRegUser size={24} className="cursor-pointer" />
+              <label className="text-[#212121] text-[0.75rem] cursor-pointer select-none">
+                Профиль
+              </label>
+            </Grid.Col>
+          ) : (
+            <Grid.Col
+              span={3}
+              className="flex items-center justify-center flex-col !cursor-pointer"
+              onClick={openModal}
+            >
+              <MdLogin size={24} className="cursor-pointer" />
+              <label className="text-[#212121] text-[0.75rem] cursor-pointer select-none">
+                Вход
+              </label>
+            </Grid.Col>
+          )}
         </Grid>
       </Group>
+      <LoginModal onClose={closeModal} opened={openedModal} />
     </footer>
   );
 }

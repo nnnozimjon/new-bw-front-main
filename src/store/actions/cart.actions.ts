@@ -8,7 +8,7 @@ import {
 } from "../slices/cartSlice";
 import { logout } from "../slices/userSlice";
 
-export const pushCart = (cart: any) => (dispatch: any) => async () => {
+export const pushCart = (cart: any) => async (dispatch: any) => {
   const url = process.env.NEXT_PUBLIC_HOST + "/basket/addrange";
 
   const response: any = await fetch(url, {
@@ -19,6 +19,7 @@ export const pushCart = (cart: any) => (dispatch: any) => async () => {
     },
     body: JSON.stringify(cart),
   });
+
   if (response.status === 401 || response.status === 403) {
     window.location.href = "/";
     dispatch(logout());

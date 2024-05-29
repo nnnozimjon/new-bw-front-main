@@ -40,11 +40,11 @@ export default function Page() {
       );
 
       const pullCartFunc = async () => {
-        if (cart.length)
+        if (cart.length !== 0)
           await dispatch(
             pushCart(
               cart.map((item: any) => ({
-                productId: item.productId,
+                productId: item?.id || item?.productId,
                 count: item.count,
               }))
             )
