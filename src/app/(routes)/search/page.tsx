@@ -2,7 +2,7 @@
 
 import { EmptyPlaceholder, ProductCard } from "@/components";
 import { Pagination } from "@/components/Pagination";
-import { useGetProductByHideQuery } from "@/store";
+import { useGetProductByFilterQuery, useGetProductByHideQuery } from "@/store";
 import { ObjectToQuery } from "@/utils/query";
 import { IProduct } from "@/utils/types";
 import { Flex, Select, SimpleGrid, Skeleton, Text } from "@mantine/core";
@@ -25,7 +25,7 @@ export default function Page() {
   const [products, setProducts] = useState<IProduct[]>([]);
 
   const { data, error, isSuccess, isError, isLoading, refetch } =
-    useGetProductByHideQuery(
+    useGetProductByFilterQuery(
       ObjectToQuery({
         query: searchText,
         categoryId,
@@ -128,12 +128,12 @@ export default function Page() {
       )}
 
       <SimpleGrid cols={{ base: 2, lg: 5, md: 4, sm: 2 }} spacing={"xl"}>
-        {products?.map((product: IProduct, i) => (
+        {products?.map((product: any, i) => (
           <ProductCard
             key={i}
             discount={product?.discount}
             id={product?.id}
-            imagePath={product?.imagePath}
+            imagePath={product?.images[0]}
             price={product?.price}
             isNew={product?.isNew}
             productName={product?.name}

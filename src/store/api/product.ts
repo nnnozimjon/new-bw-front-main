@@ -12,8 +12,8 @@ export const productApi = createApi({
       }),
     }),
     getProductByFilter: build.query({
-      query: () => ({
-        url: "",
+      query: (query) => ({
+        url: `/product/filtration${query}`,
         method: "GET",
       }),
     }),
@@ -25,12 +25,17 @@ export const productApi = createApi({
     }),
     addComment: build.mutation({
       query: (body) => ({
-        url: '/comment',
+        url: "/comment",
         method: "POST",
-        body
-      })
-    })
+        body,
+      }),
+    }),
   }),
 });
 
-export const { useGetProductByHideQuery, useGetProductByIdQuery, useAddCommentMutation } = productApi;
+export const {
+  useGetProductByHideQuery,
+  useGetProductByIdQuery,
+  useAddCommentMutation,
+  useGetProductByFilterQuery,
+} = productApi;

@@ -3,6 +3,7 @@ export interface IProduct {
     hideProduct: boolean,
     id: string,
     imagePath: string,
+    images?: string
     isNew: boolean,
     productName?: string,
     name?: string

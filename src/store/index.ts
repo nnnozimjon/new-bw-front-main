@@ -2,7 +2,12 @@ export { store } from "./store";
 
 export { useGetAllCategoryQuery } from "./api/category";
 
-export { useGetProductByHideQuery, useGetProductByIdQuery, useAddCommentMutation } from "./api/product";
+export {
+  useGetProductByHideQuery,
+  useGetProductByIdQuery,
+  useAddCommentMutation,
+  useGetProductByFilterQuery,
+} from "./api/product";
 
 export {
   useLoginMutation,
@@ -14,7 +19,11 @@ export {
 
 export { useGetAllBannersQuery } from "./api/banner";
 
-export { useGetUserOrdersQuery, useGetOrderByIdQuery, useCreateOrderMutation } from "./api/order";
+export {
+  useGetUserOrdersQuery,
+  useGetOrderByIdQuery,
+  useCreateOrderMutation,
+} from "./api/order";
 
 export { useGetAllDeliveryTypesQuery } from "./api/delivery-type";
 export { useGetAllPaymentTypesQuery } from "./api/payment-type";

@@ -2,7 +2,7 @@
 
 import { ProductCard } from "@/components";
 import EmptyPlaceholder from "@/components/EmptyPlaceholder";
-import { useGetAllCategoryQuery, useGetProductByHideQuery } from "@/store";
+import { useGetAllCategoryQuery, useGetProductByFilterQuery } from "@/store";
 import { ObjectToQuery } from "@/utils/query";
 import { IProduct } from "@/utils/types";
 import {
@@ -38,7 +38,7 @@ export default function Page() {
   const [products, setProducts] = useState<IProduct[]>([]);
 
   const { data, error, isSuccess, isError, isLoading, refetch } =
-    useGetProductByHideQuery(
+    useGetProductByFilterQuery(
       ObjectToQuery({ categoryId, pageSize, pageNumber, sort })
     );
 
@@ -130,6 +130,7 @@ export default function Page() {
     <div>
       <Head>
         <title>{subs?.name || '""'} – купить в большой стирке</title>
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Text className="text-[1.75rem] text-[#212121] my-[30px] text-center">
         {subs?.name}
@@ -170,10 +171,6 @@ export default function Page() {
         />
       </Flex>
       <br />
-
-      {!isLoading && products.length === 0 && (
-        <EmptyPlaceholder label="Ничего не найдено по запросу!" />
-      )}
 
       {isLoading && (
         <SimpleGrid cols={{ base: 2, lg: 4, md: 3, sm: 2 }} spacing={"xl"}>
@@ -222,12 +219,12 @@ export default function Page() {
         </Grid.Col>
         <Grid.Col span={{ md: 9.5, sm: 12 }}>
           <SimpleGrid cols={{ base: 2, lg: 5, md: 4, sm: 2 }} spacing={"xl"}>
-            {products?.map((product: IProduct, i) => (
+            {products?.map((product: any, i) => (
               <ProductCard
                 key={i}
                 discount={product?.discount}
                 id={product?.id}
-                imagePath={product?.imagePath}
+                imagePath={product?.images[0]}
                 price={product?.price}
                 isNew={product?.isNew}
                 productName={product?.name}
@@ -235,6 +232,9 @@ export default function Page() {
               />
             ))}
           </SimpleGrid>
+          {!isLoading && products.length === 0 && (
+            <EmptyPlaceholder label="Ничего не найдено по запросу!" />
+          )}
         </Grid.Col>
       </Grid>
       <br />

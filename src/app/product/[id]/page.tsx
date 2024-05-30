@@ -131,14 +131,15 @@ export default function Page() {
     <div>
       <Head>
         <title>{product?.name}</title>
+                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Grid>
         <Grid.Col span={{ md: 8, sm: 12 }}>
-          <Text className="text-[2rem] font-semibold text-[#212121]">
+          <Text className="text-[1.2rem] md:text-[2rem] font-semibold text-[#212121]">
             {product?.name}
           </Text>
           <Rating size={30} value={product?.rating} />
-          <Flex gap={"lg"}>
+          <Flex gap={"lg"} mb={10}>
             <Text className="text-[#888875]">
               {product?.comment?.length} отзывов
             </Text>
@@ -192,6 +193,7 @@ export default function Page() {
           >
             Оставить отзыв
           </Button>
+          <br />
           <br />
           {product?.comment?.length === 0 && (
             <EmptyPlaceholder label="У продукта нет отзывов, оставьте его первым!" />

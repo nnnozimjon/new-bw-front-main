@@ -6,7 +6,7 @@ import React, { useEffect, useRef, useState } from "react";
 import { Carousel } from "@mantine/carousel";
 import Autoplay from "embla-carousel-autoplay";
 import { ProductCard } from "@/components";
-import { useGetAllBannersQuery, useGetProductByHideQuery } from "@/store";
+import { useGetAllBannersQuery, useGetProductByFilterQuery } from "@/store";
 import { ObjectToQuery } from "@/utils/query";
 import { IProduct } from "@/utils/types";
 import { Pagination } from "@/components/Pagination";
@@ -24,7 +24,7 @@ export default function Home() {
   const autoplay = useRef(Autoplay({ delay: 4000 }));
 
   const { isLoading, isSuccess, isError, data, error, refetch } =
-    useGetProductByHideQuery(ObjectToQuery({ pageNumber, pageSize }));
+    useGetProductByFilterQuery(ObjectToQuery({ pageNumber, pageSize }));
 
   const { data: dataBanner, isSuccess: isSuccessBanner } =
     useGetAllBannersQuery({});
@@ -89,12 +89,12 @@ export default function Home() {
       )}
 
       <SimpleGrid cols={{ base: 2, lg: 4, md: 3, sm: 2 }} spacing={"xl"}>
-        {products?.map((product: IProduct, i) => (
+        {products?.map((product: any, i) => (
           <ProductCard
             key={i}
             discount={product?.discount}
             id={product?.id}
-            imagePath={product?.imagePath}
+            imagePath={product?.images[0]}
             price={product?.price}
             isNew={product?.isNew}
             productName={product?.name}

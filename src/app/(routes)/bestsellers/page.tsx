@@ -1,7 +1,7 @@
 "use client";
 
 import { ProductCard } from "@/components";
-import { useGetProductByHideQuery } from "@/store";
+import { useGetProductByFilterQuery } from "@/store";
 import { ObjectToQuery } from "@/utils/query";
 import { IProduct } from "@/utils/types";
 import { SimpleGrid, Skeleton, Text } from "@mantine/core";
@@ -12,7 +12,7 @@ export default function Page() {
   const [products, setProducts] = useState<IProduct[]>([]);
 
   const { isLoading, isSuccess, isError, data, error } =
-    useGetProductByHideQuery(ObjectToQuery({ tag: 3 }));
+    useGetProductByFilterQuery(ObjectToQuery({ tag: 3 }));
 
   useEffect(() => {
     if (isSuccess) {
@@ -37,12 +37,12 @@ export default function Page() {
       )}
 
       <SimpleGrid cols={{ base: 2, lg: 4, md: 3, sm: 2 }} spacing={"xl"}>
-        {products?.map((product: IProduct, i) => (
+        {products?.map((product: any, i) => (
           <ProductCard
             key={i}
             discount={product?.discount}
             id={product?.id}
-            imagePath={product?.imagePath}
+            imagePath={product?.images[0]}
             price={product?.price}
             isNew={product?.isNew}
             productName={product?.name}
