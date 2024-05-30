@@ -13,6 +13,7 @@ import {
 } from "@/store/actions/cart.actions";
 import { RootState, useAppDispatch } from "@/store/store";
 import { redirect } from "@/utils";
+import { IProduct } from "@/utils/types";
 import {
   Button,
   Divider,
@@ -33,8 +34,8 @@ export default function Page() {
   const user = useSelector((state: RootState) => state?.user?.user);
 
   const handleIncreaseCount = useCallback(
-    async (product: any) => {
-      const existingItem = cart?.find((item: any) => item.id === product?.id);
+    async (product: IProduct) => {
+      const existingItem = cart?.find((item: IProduct) => item.id === product?.id);
       if (user.isAuth)
         dispatch(
           increaseProductCountService({
@@ -48,8 +49,8 @@ export default function Page() {
   );
 
   const handleDecreaseCount = useCallback(
-    async (product: any) => {
-      const existingItem = cart?.find((item: any) => item.id === product?.id);
+    async (product: IProduct) => {
+      const existingItem = cart?.find((item: IProduct) => item.id === product?.id);
 
       if (existingItem?.count === 1)
         if (user.isAuth) dispatch(removeFromCartService({ id: product?.id }));
@@ -66,13 +67,13 @@ export default function Page() {
     [cart, user.isAuth, dispatch]
   );
 
-  const handleRemoveProduct = (product: any) => {
+  const handleRemoveProduct = (product: IProduct) => {
     if (user.isAuth) dispatch(removeFromCartService({ id: product?.id }));
     else dispatch(removeFromCart({ id: product?.id }));
   };
 
-  const calculateTotalPrice = (cart: any) => {
-    return cart?.reduce((total: any, item: any) => {
+  const calculateTotalPrice = (cart: IProduct[]) => {
+    return cart?.reduce((total: any, item: IProduct) => {
       return total + Number(item?.price) * Number(item?.count);
     }, 0);
   };
@@ -87,7 +88,7 @@ export default function Page() {
       {cart?.length === 0 && <EmptyPlaceholder label="Корзина пусто" />}
       {cart.length !== 0 && (
         <Flex gap={"sm"} direction={"column"}>
-          {cart?.map((item: any, i: number) => (
+          {cart?.map((item: IProduct, i: number) => (
             <Paper key={i} className="rounded-lg hover:shadow-md" withBorder>
               <Flex
                 justify={"space-between"}

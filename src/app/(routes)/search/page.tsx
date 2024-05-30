@@ -128,7 +128,7 @@ export default function Page() {
       )}
 
       <SimpleGrid cols={{ base: 2, lg: 5, md: 4, sm: 2 }} spacing={"xl"}>
-        {products?.map((product: any, i) => (
+        {products?.map((product: IProduct, i) => (
           <ProductCard
             key={i}
             discount={product?.discount}

@@ -6,6 +6,7 @@ import { SimpleGrid, Text } from "@mantine/core";
 import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 import Head from "next/head";
+import { IProduct } from "@/utils/types";
 
 export default function Page() {
   const favorites = useSelector(
@@ -24,7 +25,7 @@ export default function Page() {
       )}
 
       <SimpleGrid cols={{ base: 2, lg: 4, md: 3, sm: 2 }} spacing={"xl"}>
-        {favorites?.map((product: any, i: any) => (
+        {favorites?.map((product: IProduct, i: number) => (
           <ProductCard
             key={i}
             discount={product?.discount}

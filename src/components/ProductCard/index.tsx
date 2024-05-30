@@ -39,7 +39,7 @@ export default function ProductCard({
   productName = "",
   price,
   rating,
-}: Omit<IProduct, "hideProduct" | "productDate">) {
+}: Omit<IProduct, "hideProduct" | "productDate" | "images">) {
   const dispatch = useAppDispatch();
   const user = useSelector((state: RootState) => state?.user?.user);
 

@@ -4,6 +4,7 @@ import { useLoginByEmailMutation } from "@/store";
 import { pullCart, pushCart } from "@/store/actions/cart.actions";
 import { loginSuccess } from "@/store/slices/userSlice";
 import { RootState, useAppDispatch } from "@/store/store";
+import { IProduct } from "@/utils/types";
 import { Button, Grid, InputBase, Paper, Text } from "@mantine/core";
 import Head from "next/head";
 import { useEffect, useState } from "react";
@@ -43,7 +44,7 @@ export default function Page() {
         if (cart.length !== 0)
           await dispatch(
             pushCart(
-              cart.map((item: any) => ({
+              cart.map((item: IProduct) => ({
                 productId: item?.id || item?.productId,
                 count: item.count,
               }))

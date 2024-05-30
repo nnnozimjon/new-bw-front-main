@@ -1,5 +1,6 @@
 "use client";
 
+import { IOrder, IType } from "@/app/(routes)/order-list/page";
 import { useGetOrderByIdQuery } from "@/store";
 import { Container, Grid, Paper, Text, Textarea } from "@mantine/core";
 import Head from "next/head";
@@ -9,7 +10,7 @@ import { useEffect, useState } from "react";
 export default function Page() {
   const params = useParams();
   const orderId = params.id;
-  const [order, setOrder] = useState<any>({});
+  const [order, setOrder] = useState<IOrder | null>(null);
 
   const { data, isSuccess } = useGetOrderByIdQuery({ id: orderId });
 
@@ -59,7 +60,7 @@ export default function Page() {
               span={{ sm: 12, md: 6 }}
               className="text-start md:text-end"
             >
-              {new Date(order?.orderAt).toLocaleDateString()}
+              {new Date((order as IOrder)?.orderAt).toLocaleDateString()}
             </Grid.Col>{" "}
             <Grid.Col span={{ sm: 12, md: 6 }}>Способ доставки:</Grid.Col>
             <Grid.Col
@@ -88,7 +89,7 @@ export default function Page() {
           <Text className="text-[1.125rem] font-semibold my-4">
             Список товаров:
           </Text>
-          {order?.type?.map((order: any, index: number) => (
+          {order?.type?.map((order: IType, index: number) => (
             <div
               className="border border-solid rounded-md p-4 mt-3"
               key={index}

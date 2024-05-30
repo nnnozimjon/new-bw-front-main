@@ -9,6 +9,7 @@ import {
 } from "@/store";
 import { RootState, useAppDispatch } from "@/store/store";
 import { redirect } from "@/utils";
+import { IProduct } from "@/utils/types";
 import {
   Button,
   Divider,
@@ -112,7 +113,7 @@ export default function Page() {
             <Text className="text-[#212121] text-[1.125rem] font-semibold">
               Выбранные товары:
             </Text>
-            {cart?.map((item: any, index: number) => (
+            {cart?.map((item: IProduct, index: number) => (
               <Fragment key={index}>
                 <Flex gap={"sm"}>
                   <Image

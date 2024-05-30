@@ -7,12 +7,29 @@ import { Accordion, Button, Grid, Paper, Table, Text } from "@mantine/core";
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
+export interface IType {
+  count: number;
+  price: number;
+  vendorCode: string;
+  name: string;
+}
+export interface IOrder {
+  orderId: number;
+  lastName: string;
+  firstName: string;
+  orderStatus: string;
+  deliveryType: string;
+  paymentType: string;
+  type: IType[];
+  orderAt: Date;
+  description: string
+}
 export default function Page() {
   const [orders, setOrders] = useState([]);
 
   const { data, isSuccess } = useGetUserOrdersQuery({});
 
-  const rows = orders?.map((element: any) => (
+  const rows = orders?.map((element: IOrder) => (
     <Table.Tr
       key={element.orderStatus}
       className="cursor-pointer"
@@ -79,7 +96,7 @@ export default function Page() {
 
       {orders.length !== 0 && (
         <Accordion hiddenFrom="md">
-          {orders?.map((element: any, key) => (
+          {orders?.map((element: IOrder, key) => (
             <Accordion.Item key={key} value={String(key)}>
               <Accordion.Control>
                 <Grid>
@@ -89,7 +106,7 @@ export default function Page() {
                   <Grid.Col span={6}>
                     {element?.type
                       ?.reduce(
-                        (acc: any, element: any) =>
+                        (acc: any, element: IType) =>
                           acc + (element.price ? element.price : 0),
                         0
                       )

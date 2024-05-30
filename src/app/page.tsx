@@ -12,6 +12,11 @@ import { IProduct } from "@/utils/types";
 import { Pagination } from "@/components/Pagination";
 import { redirect } from "@/utils";
 
+interface IBanner {
+  id: string;
+  href: string;
+  imagePath: string;
+}
 
 export default function Home() {
   const [pageNumber, setPageNumber] = useState(1);
@@ -63,7 +68,7 @@ export default function Home() {
           onMouseLeave={autoplay.current.reset}
           className="mb-[60px]"
         >
-          {banners?.map((banner: any, index) => (
+          {banners?.map((banner: IBanner, index: number) => (
             <Carousel.Slide key={index}>
               <Image
                 src={'https://api.chistayaliniya.tj/' + banner?.imagePath}
@@ -89,7 +94,7 @@ export default function Home() {
       )}
 
       <SimpleGrid cols={{ base: 2, lg: 4, md: 3, sm: 2 }} spacing={"xl"}>
-        {products?.map((product: any, i) => (
+        {products?.map((product: IProduct, i) => (
           <ProductCard
             key={i}
             discount={product?.discount}

@@ -142,7 +142,7 @@ export default function Page() {
         justify={"center"}
         wrap={"wrap"}
       >
-        {subs?.subCategories?.map((cat: any, index: number) => (
+        {subs?.subCategories?.map((cat: ICategory, index: number) => (
           <div
             key={index}
             className="rounded-full p-2 shadow-md select-none cursor-pointer w-fit text-center shrink-0"
@@ -188,7 +188,7 @@ export default function Page() {
             </Text>
 
             <Accordion>
-              {subs?.subCategories?.map((cat: any, index: number) => (
+              {subs?.subCategories?.map((cat: ICategory, index: number) => (
                 <Accordion.Item key={index} value={cat?.name}>
                   <Accordion.Control>
                     <a
@@ -219,7 +219,7 @@ export default function Page() {
         </Grid.Col>
         <Grid.Col span={{ md: 9.5, sm: 12 }}>
           <SimpleGrid cols={{ base: 2, lg: 5, md: 4, sm: 2 }} spacing={"xl"}>
-            {products?.map((product: any, i) => (
+            {products?.map((product: IProduct, i) => (
               <ProductCard
                 key={i}
                 discount={product?.discount}
