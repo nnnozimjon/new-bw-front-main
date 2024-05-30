@@ -19,6 +19,7 @@ import {
 } from "@/store/actions/cart.actions";
 import { RootState, useAppDispatch } from "@/store/store";
 import { redirect } from "@/utils";
+import { Carousel } from "@mantine/carousel";
 import {
   Button,
   Flex,
@@ -31,15 +32,18 @@ import {
   Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import Autoplay from "embla-carousel-autoplay";
 import Head from "next/head";
 import { useParams } from "next/navigation";
-import { Fragment, useCallback, useEffect, useState } from "react";
+import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
 export default function Page() {
   const dispatch = useAppDispatch();
   const user = useSelector((state: RootState) => state?.user?.user);
+
+  const autoplay = useRef(Autoplay({ delay: 4000 }));
 
   const [openedModal, { open: openModal, close: closeModal }] =
     useDisclosure(false);
@@ -48,7 +52,7 @@ export default function Page() {
   const productId = params?.id;
 
   const [product, setProduct] = useState<any>({});
-  const [selectedImage, setSelectedImage] = useState("");
+  const [selectedImage, setSelectedImage] = useState(0);
 
   const favorites: any[] = useSelector(
     (state: RootState) => state?.favorites?.favorites
@@ -67,9 +71,6 @@ export default function Page() {
   useEffect(() => {
     if (isSuccess) {
       setProduct(data);
-      setSelectedImage(
-        "https://api.chistayaliniya.tj" + data?.images[0]?.imagePath
-      );
     }
   }, [isSuccess]);
 
@@ -131,7 +132,7 @@ export default function Page() {
     <div>
       <Head>
         <title>{product?.name}</title>
-                <meta name="viewport" content="initial-scale=1.0, width=device-width" />
+        <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
       <Grid>
         <Grid.Col span={{ md: 8, sm: 12 }}>
@@ -147,37 +148,44 @@ export default function Page() {
               Артикуль {product?.vendorCode}
             </Text>
           </Flex>
-          <Grid align="flex-start">
-            <Grid.Col span={{ md: 1.5 }} className="m-0 p-0">
-              <SimpleGrid
-                className="m-0 p-0 gap-0"
-                cols={{ base: 3, sm: 3, lg: 1, md: 1 }}
-              >
-                {product?.images?.map((image: any, index: number) => (
-                  <Image
-                    key={index}
-                    src={"https://api.chistayaliniya.tj" + image?.imagePath}
-                    alt="Preview"
-                    onClick={() =>
-                      setSelectedImage(
-                        "https://api.chistayaliniya.tj" + image?.imagePath
-                      )
-                    }
-                    className={`w-full mb-2 rounded-lg cursor-pointer border-3 p-1 border-red-400 border-solid}`}
-                  />
-                ))}
-              </SimpleGrid>
-            </Grid.Col>
-            <Grid.Col
-              span={{ md: 10.5 }}
-              className="m-0 p-0 flex items-center justify-center"
+          <Grid align="flex-start" justify="center">
+            <Carousel
+              withControls={false}
+              plugins={[autoplay.current]}
+              onMouseEnter={autoplay.current.stop}
+              onMouseLeave={autoplay.current.reset}
+              slideSize={"100%"}
+              slideGap={'md'}
+              align={'start'}
+              initialSlide={selectedImage}
             >
-              <Image
-                src={selectedImage}
-                alt=""
-                className="mt-4 mb-4 rounded-xl w-full object-contain"
-              />
-            </Grid.Col>
+              {product?.images?.map((image: any, index: number) => (
+                <Carousel.Slide key={index}>
+                  <Image
+                    src={"https://api.chistayaliniya.tj" + image?.imagePath}
+                    alt=""
+                    className="mt-4 mb-4 rounded-xl h-[300px] md:h-[500px] object-contain"
+                  />
+                </Carousel.Slide>
+              ))}
+            </Carousel>
+
+            <SimpleGrid
+              className="m-0 p-0 gap-0"
+              cols={{ base: 6, sm: 6, lg: 12, md: 6 }}
+            >
+              {product?.images?.map((image: any, index: number) => (
+                <Image
+                  key={index}
+                  src={"https://api.chistayaliniya.tj" + image?.imagePath}
+                  alt="Preview"
+                  onClick={() =>
+                    setSelectedImage(index)
+                  }
+                  className={`w-full mb-2 rounded-lg cursor-pointer border-3 p-1 border-red-400 border-solid}`}
+                />
+              ))}
+            </SimpleGrid>
           </Grid>
           <Text className="text-[2rem] font-semibold text-[#212121]">
             Характеристики
