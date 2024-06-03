@@ -39,6 +39,33 @@ import { Fragment, useCallback, useEffect, useRef, useState } from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
+interface Characteristic {
+  id: number;
+  name: string;
+  value: any;
+}
+
+function groupCharacteristicsByNames(
+  characteristics: Characteristic[]
+): Characteristic[][] {
+  const groupedCharacteristicsArrays: Characteristic[][] = [];
+
+  characteristics?.forEach((characteristic: Characteristic) => {
+    const index = groupedCharacteristicsArrays.findIndex(
+      (array: Characteristic[]) =>
+        array.length > 0 && array[0].name === characteristic.name
+    );
+
+    if (index !== -1) {
+      groupedCharacteristicsArrays[index].push(characteristic);
+    } else {
+      groupedCharacteristicsArrays.push([characteristic]);
+    }
+  });
+
+  return groupedCharacteristicsArrays;
+}
+
 export default function Page() {
   const dispatch = useAppDispatch();
   const user = useSelector((state: RootState) => state?.user?.user);
@@ -128,6 +155,26 @@ export default function Page() {
     dispatch(removeFromFavorites(product));
   };
 
+  const groupedCharacteristics = groupCharacteristicsByNames(
+    data?.characteristics
+  );
+
+  const characteristicElements = groupedCharacteristics?.map(
+    (characteristicArray: Characteristic[], index: number) => {
+      const name = characteristicArray[0]?.name;
+      const values = characteristicArray
+        .map((characteristic) => characteristic?.value)
+        .join(", ");
+
+      return (
+        <Flex key={index} gap="lg">
+          <Text className="text-[#212121] text-[1rem]">{name}: </Text>
+          <Text className="text-[#515151]">{values}</Text>
+        </Flex>
+      );
+    }
+  );
+
   return (
     <div>
       <Head>
@@ -155,8 +202,8 @@ export default function Page() {
               onMouseEnter={autoplay.current.stop}
               onMouseLeave={autoplay.current.reset}
               slideSize={"100%"}
-              slideGap={'md'}
-              align={'start'}
+              slideGap={"md"}
+              align={"start"}
               initialSlide={selectedImage}
             >
               {product?.images?.map((image: any, index: number) => (
@@ -179,9 +226,7 @@ export default function Page() {
                   key={index}
                   src={"https://api.chistayaliniya.tj" + image?.imagePath}
                   alt="Preview"
-                  onClick={() =>
-                    setSelectedImage(index)
-                  }
+                  onClick={() => setSelectedImage(index)}
                   className={`w-full mb-2 rounded-lg cursor-pointer border-3 p-1 border-red-400 border-solid}`}
                 />
               ))}
@@ -190,6 +235,7 @@ export default function Page() {
           <Text className="text-[2rem] font-semibold text-[#212121]">
             Характеристики
           </Text>
+          {characteristicElements}
           <br />
           <Text className="text-[2rem] font-semibold text-[#212121]">
             Отзывы
