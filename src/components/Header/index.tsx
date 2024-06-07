@@ -2,13 +2,11 @@
 
 import {
   Container,
-  Divider,
   Flex,
   Group,
   Menu,
   Text,
   NavLink,
-  SimpleGrid,
   Box,
   Drawer,
   Indicator,
@@ -16,34 +14,18 @@ import {
 import { Logo } from "..";
 import { FaList, FaRegHeart, FaRegUser, FaStar } from "react-icons/fa";
 import { MdDiscount, MdLogin, MdOutlineShoppingCart } from "react-icons/md";
-import { Fragment, ReactNode, useEffect, useState } from "react";
+import { Fragment, ReactNode } from "react";
 import SearchBar from "../SearchBar";
 import { CgMenuLeft } from "react-icons/cg";
 import { useDisclosure } from "@mantine/hooks";
-import { useGetAllCategoryQuery } from "@/store";
 import { FaSquarePlus } from "react-icons/fa6";
 import { TbLogout } from "react-icons/tb";
 import { GoChecklist } from "react-icons/go";
 import { LoginModal } from "@/modals/login-modal";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "@/store/store";
 import { logout } from "@/store/slices/userSlice";
-
-export interface ICategory {
-  id: string;
-  name: string;
-  iconPath?: string | null;
-  imagePath?: string | null;
-  subCategories: ICategory[];
-}
-
-const initialValue: ICategory = {
-  id: "",
-  name: "",
-  iconPath: "",
-  imagePath: "",
-  subCategories: [],
-};
+import { ICategory } from "../GroupedHeader";
 
 interface IDrawerLinks {
   group: string;
@@ -107,7 +89,11 @@ const drawerLinks: IDrawerLinks[] = [
   },
 ];
 
-export default function Header() {
+interface IProps {
+  categories: ICategory[];
+}
+
+export default function Header({ categories }: IProps) {
   const dispatch = useAppDispatch();
 
   const favorites = useSelector(
@@ -124,23 +110,12 @@ export default function Header() {
     useDisclosure(false);
 
   const [opened, { open, close }] = useDisclosure(false);
-  const [categories, setCategories] = useState<ICategory[]>([]);
-  const [activeLink, setActiveLink] = useState<ICategory>(initialValue);
-
-  const { data, error, isSuccess, isLoading, isError } = useGetAllCategoryQuery(
-    {}
-  );
 
   const redirect = (href: string) => window.location.replace(href);
+
   const logoutFunc = () => {
     dispatch(logout());
   };
-  useEffect(() => {
-    if (isSuccess) {
-      setCategories(data);
-      setActiveLink(categories[0]);
-    }
-  }, [isSuccess, isError]);
 
   return (
     <header className="p-[20px] fixed w-full z-[900] bg-white top-0">
@@ -148,75 +123,13 @@ export default function Header() {
         <Group hiddenFrom="md" className="w-full items-center justify-center">
           <Logo className="text-[2rem]" />
         </Group>
-        <Flex gap={"lg"} align={"center"} className="w-full" wrap={"nowrap"}>
+        <Flex gap={"xl"} align={"center"} className="w-full" wrap={"nowrap"}>
           <Box
             visibleFrom="md"
             className="w-fit shrink-0 flex items-center gap-[30px]"
           >
             <Logo />
-            <Menu classNames={{ dropdown: "border-none" }} width={"100%"}>
-              <Menu.Target>
-                <button className="!bg-transparent border-none cursor-pointer">
-                  Категории
-                </button>
-              </Menu.Target>
-              <Menu.Dropdown>
-                <Container size={"xl"} className="py-4">
-                  <Flex gap={"sm"}>
-                    <div className="!w-[300px]">
-                      {categories?.map((category, index) => (
-                        <NavLink
-                          onMouseOver={() => setActiveLink(category)}
-                          active={category?.id === activeLink?.id}
-                          c={"black"}
-                          color="gray.2"
-                          key={index}
-                          variant="filled"
-                          label={category?.name}
-                          className="rounded-lg text-[0.875rem] no-underline font-semibold text-[#212121s]"
-                          href={`/category/${category?.id}`}
-                        />
-                      ))}
-                    </div>
-                    <Divider orientation="vertical" />
-                    <Group className="border w-full items-start px-[30px] py-[20px] flex-col">
-                      <Text className="text-[1.45rem] font-bold text-[#212121]">
-                        {activeLink?.name}
-                      </Text>
-                      <SimpleGrid
-                        className="w-full"
-                        cols={{ sm: 2, lg: 4 }}
-                        spacing={{ base: 10, sm: "xl" }}
-                        verticalSpacing={{ base: "md", sm: "xl" }}
-                      >
-                        {activeLink?.subCategories?.map(
-                          (subCategory, index) => (
-                            <Flex direction={"column"} key={index}>
-                              <NavLink
-                                className="text-[1rem] no-underline font-bold text-[#212121] hover:text-[#2A5FFE]"
-                                color="none"
-                                label={subCategory?.name}
-                                href={`/category/${subCategory?.id}`}
-                              />
-                              {subCategory?.subCategories?.map((sub, index) => (
-                                <NavLink
-                                  unstyled
-                                  key={index}
-                                  className="text-[1rem] no-underline text-[#212121] hover:text-[#2A5FFE] pl-[10px] cursor-pointer m-[10px_0px_0px]"
-                                  color="none"
-                                  label={sub?.name}
-                                  href={`/category/${sub?.id}`}
-                                />
-                              ))}
-                            </Flex>
-                          )
-                        )}
-                      </SimpleGrid>
-                    </Group>
-                  </Flex>
-                </Container>
-              </Menu.Dropdown>
-            </Menu>
+           
           </Box>
           <Box hiddenFrom="md" className="flex items-center">
             <CgMenuLeft size={24} className="cursor-pointer" onClick={open} />
@@ -315,6 +228,7 @@ export default function Header() {
           </Box>
         </Flex>
       </Container>
+
       <Drawer
         size={"xs"}
         opened={opened}

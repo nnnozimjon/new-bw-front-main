@@ -4,14 +4,22 @@ import { Inter } from "next/font/google";
 import "@mantine/core/styles.css";
 import "@mantine/carousel/styles.css";
 import "./globals.css";
-import { Button, Container, createTheme, Group, MantineProvider, rem } from "@mantine/core";
-import { Header, Footer } from "@/components";
+import {
+  Button,
+  Container,
+  createTheme,
+  Group,
+  MantineProvider,
+  rem,
+} from "@mantine/core";
+import { Footer } from "@/components";
 import { MdDiscount } from "react-icons/md";
 import { FaSquarePlus } from "react-icons/fa6";
 import { FaStar } from "react-icons/fa";
 import { cn } from "@/utils/cn";
 import { Provider } from "react-redux";
 import { store } from "@/store";
+import GroupedHeader from "@/components/GroupedHeader";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -40,12 +48,12 @@ const primeLinks: primeLinks[] = [
 ];
 
 
+
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-
   const CONTAINER_SIZES: Record<string, string> = {
     xxs: rem(300),
     xs: rem(400),
@@ -72,13 +80,15 @@ export default function RootLayout({
     },
   });
 
+
+
   return (
     <html lang="en">
       <body className={cn(inter.className, "bg-white")}>
         <Provider store={store}>
           <MantineProvider theme={theme} defaultColorScheme="light">
-            <Header />
-            <Container size={"xxl"} className="mt-[150px] md:mt-[80px]">
+            <GroupedHeader />
+            <Container size={"xxl"} className="mt-[150px] md:mt-[20px]">
               <Group visibleFrom="md" className="my-[20px]">
                 {primeLinks?.map((link, index) => (
                   <Button
