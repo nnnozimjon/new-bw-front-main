@@ -66,7 +66,7 @@ export default function Page() {
 
   const calculateTotalPrice = (cart: any) => {
     return cart?.reduce((total: any, item: any) => {
-      return total + Number(item?.price) * Number(item?.count);
+      return total + (Number(item?.price) * ((100 - Number(item?.discount)) / 100)) * Number(item?.count);
     }, 0);
   };
 
@@ -123,7 +123,7 @@ export default function Page() {
                   />
                   <Text>{item?.name}</Text>
                   <Text>
-                    {item?.count} шт. ({item?.price}) c.
+                    {item?.count} шт. ({Number(item?.price) * ((100 - Number(item?.discount)) / 100)}) c.
                   </Text>
                 </Flex>
                 <Divider variant="dotted" my={"sm"} />

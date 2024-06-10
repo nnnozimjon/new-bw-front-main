@@ -55,7 +55,15 @@ export default function ProductCard({
 
   const handleAddToFavorites = () => {
     dispatch(
-      addToFavorites({ id, discount, isNew, productName, price, rating, imagePath })
+      addToFavorites({
+        id,
+        discount,
+        isNew,
+        productName,
+        price,
+        rating,
+        imagePath,
+      })
     );
   };
 
@@ -88,7 +96,15 @@ export default function ProductCard({
       );
     else
       dispatch(
-        addToCart({ id, discount, isNew, productName, price, rating, imagePath })
+        addToCart({
+          id,
+          discount,
+          isNew,
+          productName,
+          price,
+          rating,
+          imagePath,
+        })
       );
   }, [dispatch, user.isAuth]);
 
@@ -100,7 +116,6 @@ export default function ProductCard({
     else dispatch(increaseProductCount({ id }));
   }, [dispatch, existingItem?.count, id, user.isAuth]);
 
-
   const handleDecreaseCount = useCallback(async () => {
     if (existingItem?.count === 1)
       if (user.isAuth) dispatch(removeFromCartService({ id }));
@@ -111,6 +126,8 @@ export default function ProductCard({
       );
     else dispatch(decreaseProductCount({ id }));
   }, [existingItem, user.isAuth, dispatch, id]);
+
+  const discountedPrice = Number(price) * ((100 - Number(discount)) / 100);
 
   return (
     <Card className="hover:shadow-2xl hover:scale-105 cursor-pointer">
@@ -137,7 +154,9 @@ export default function ProductCard({
               onClick={() => redirect("/product/" + id)}
               className="cursor-pointer"
             >
-              {productName?.length < 30 ? productName : productName?.substring(0, 30) + "..."}
+              {productName?.length < 30
+                ? productName
+                : productName?.substring(0, 30) + "..."}
             </Text>
           </Grid.Col>
           <Grid.Col className="justify-end flex" span={3}>
@@ -158,9 +177,28 @@ export default function ProductCard({
         </Grid>
       </Group>
       <div>
-        <Text className="text-[#4b4b4b] text-[1rem] m-0 p-0">
-          {price?.toFixed(2)} c.
-        </Text>
+        <Flex align={"center"} justify={"space-between"}>
+          {discount === 0 ? (
+            <Text className="text-[#4b4b4b] text-[1rem] m-0 p-0">
+              {price?.toFixed(2)} c.
+            </Text>
+          ) : (
+            <Text className="text-[#4b4b4b] text-[1rem] m-0 p-0">
+              {discountedPrice?.toFixed(2)} c.{" "}
+              <sup className="line-through">{price?.toFixed(2)} c.</sup>
+            </Text>
+          )}
+
+          {discount !== 0 && (
+            <Badge
+              size="sm"
+              variant="gradient"
+              gradient={{ from: "grape", to: "red", deg: 90 }}
+            >
+              -{discount}%
+            </Badge>
+          )}
+        </Flex>
         <div className="-z-10">
           <Rating readOnly size={"15"} value={rating} />
         </div>

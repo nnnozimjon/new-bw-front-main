@@ -72,9 +72,10 @@ export default function Page() {
     else dispatch(removeFromCart({ id: product?.id }));
   };
 
+  
   const calculateTotalPrice = (cart: IProduct[]) => {
     return cart?.reduce((total: any, item: IProduct) => {
-      return total + Number(item?.price) * Number(item?.count);
+      return total + Number(Number(item?.price) * ((100 - Number(item?.discount)) / 100)) * Number(item?.count);
     }, 0);
   };
 
@@ -122,12 +123,12 @@ export default function Page() {
                       </button>
                     </Flex>
                     <Text className="text-[0.875rem] text-[#888785]">
-                      x {Number(item?.price).toFixed(2)} c.
+                      x {(Number(item?.price) * ((100 - Number(item?.discount)) / 100)).toFixed(2)} c.
                     </Text>
                   </Group>
                   <Group>
                     <Text>
-                      {(Number(item?.count) * Number(item?.price)).toFixed(2)}{" "}
+                      {(Number(item?.count) * Number(item?.price) * ((100 - Number(item?.discount)) / 100)).toFixed(2)}
                       c.
                     </Text>
                     <Button
