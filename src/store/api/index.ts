@@ -5,3 +5,4 @@ export { deliverTypeApi } from "./delivery-type";
 export { orderApi } from "./order";
 export { paymentTypeApi } from "./payment-type";
 export { productApi } from "./product";
+export { brandsApi } from './brands'

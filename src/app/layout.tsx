@@ -20,6 +20,7 @@ import { cn } from "@/utils/cn";
 import { Provider } from "react-redux";
 import { store } from "@/store";
 import GroupedHeader from "@/components/GroupedHeader";
+import { TbBrand4Chan } from "react-icons/tb";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -44,6 +45,11 @@ const primeLinks: primeLinks[] = [
     label: "Хит продаж",
     href: "/bestsellers",
     icon: <FaStar />,
+  },
+    {
+    label: "Бренды",
+    href: "/brands",
+    icon: <TbBrand4Chan />,
   },
 ];
 

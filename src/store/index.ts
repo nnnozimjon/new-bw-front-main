@@ -41,3 +41,6 @@ export {
   decreaseProductCount,
   increaseProductCount,
 } from "./slices/cartSlice";
+
+
+export { useGetAllBrandsQuery } from './api/brands'

@@ -3,6 +3,7 @@ import { cartReducer, favoritesReducer, userReducer } from "./slices";
 import {
   authApi,
   bannerApi,
+  brandsApi,
   categoryApi,
   deliverTypeApi,
   orderApi,
@@ -23,6 +24,7 @@ export const store = configureStore({
     [orderApi.reducerPath]: orderApi.reducer,
     [paymentTypeApi.reducerPath]: paymentTypeApi.reducer,
     [deliverTypeApi.reducerPath]: deliverTypeApi.reducer,
+    [brandsApi.reducerPath]: brandsApi.reducer
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(
@@ -32,7 +34,8 @@ export const store = configureStore({
       bannerApi.middleware,
       orderApi.middleware,
       paymentTypeApi.middleware,
-      deliverTypeApi.middleware
+      deliverTypeApi.middleware,
+      brandsApi.middleware
     ),
 });
 
