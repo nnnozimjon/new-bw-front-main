@@ -9,7 +9,8 @@ import {
   Text,
 } from "@mantine/core";
 import { FaSearch } from "react-icons/fa";
-import { ICategory } from "../Header";
+
+import { ICategory } from "../GroupedHeader";
 import { useEffect, useState } from "react";
 import { redirect } from "@/utils";
 import { useSearchParams } from "next/navigation";
