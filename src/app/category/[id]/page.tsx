@@ -18,7 +18,7 @@ import {
 import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { Pagination } from "@/components/Pagination";
-import { ICategory } from "@/components/Header";
+import { ICategory } from "@/components/GroupedHeader";
 import Head from "next/head";
 
 export default function Page() {
