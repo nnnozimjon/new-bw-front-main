@@ -11,6 +11,7 @@ export interface ICategory {
   iconPath?: string | null;
   imagePath?: string | null;
   subCategories: ICategory[];
+  showIndex?: number;
 }
 
 const initialValue: ICategory = {
@@ -31,7 +32,7 @@ export default function GroupedHeader() {
 
   useEffect(() => {
     if (isSuccess) {
-      setCategories(data);
+      setCategories(data?.toReversed());
       setActiveLink(categories[0]);
     }
   }, [isSuccess, isError]);

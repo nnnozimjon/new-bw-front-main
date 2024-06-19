@@ -11,7 +11,7 @@ import {
 } from "@mantine/core";
 import { ICategory } from "../GroupedHeader";
 import { NavLink } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 interface IProps {
   categories: ICategory[];
@@ -23,10 +23,12 @@ const initialValue: ICategory = {
   iconPath: "",
   imagePath: "",
   subCategories: [],
+  showIndex: 0
 };
 
 export default function HeaderCategories({ categories }: IProps) {
   const [activeLink, setActiveLink] = useState<ICategory>(initialValue);
+
 
   return (
     <div className="p-4 bg-blue-600 mt-[90px] w-full">
