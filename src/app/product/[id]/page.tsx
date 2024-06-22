@@ -1,6 +1,7 @@
 "use client";
 
 import { EmptyPlaceholder } from "@/components";
+import { useGetCategories } from "@/components/GroupedHeader/GetCategories";
 import { CommentModal } from "@/modals/comment-modal";
 import {
   addToCart,
@@ -21,6 +22,8 @@ import { RootState, useAppDispatch } from "@/store/store";
 import { redirect } from "@/utils";
 import { Carousel } from "@mantine/carousel";
 import {
+  Anchor,
+  Breadcrumbs,
   Button,
   Flex,
   Grid,
@@ -69,6 +72,8 @@ function groupCharacteristicsByNames(
 export default function Page() {
   const dispatch = useAppDispatch();
   const user = useSelector((state: RootState) => state?.user?.user);
+
+  const { categories } = useGetCategories();
 
   const autoplay = useRef(Autoplay({ delay: 4000 }));
 
@@ -175,6 +180,33 @@ export default function Page() {
     }
   );
 
+  function findCategoryById(categories: any[], id: string) {
+    for (let category of categories) {
+      if (category?.id == id) {
+        return category;
+      }
+      // Recursively search in subcategories
+      const found: any = findCategoryById(category?.subCategories, id);
+      if (found) {
+        return found;
+      }
+    }
+    return null;
+  }
+  const productCategory = findCategoryById(categories, product?.categoryId);
+
+  console.log(productCategory);
+
+  const items = [
+    { title: "Главная", href: "/" },
+    { title: productCategory?.name, href: "/category/" + productCategory?.id },
+    { title: product?.name },
+  ].map((item, index) => (
+    <Anchor href={item.href} className={`${!item?.href && 'text-[gray] no-underline hover:no-underline cursor-default'}`} key={index}>
+      {item.title}
+    </Anchor>
+  ));
+
   return (
     <div>
       <Head>
@@ -183,6 +215,7 @@ export default function Page() {
       </Head>
       <Grid>
         <Grid.Col span={{ md: 8, sm: 12 }}>
+          <Breadcrumbs>{items}</Breadcrumbs>
           <Text className="text-[1.2rem] md:text-[2rem] font-semibold text-[#212121]">
             {product?.name}
           </Text>
@@ -197,11 +230,9 @@ export default function Page() {
           </Flex>
           <Grid align="flex-start" justify="center">
             <Carousel
-              withControls={false}
-              plugins={[autoplay.current]}
-              onMouseEnter={autoplay.current.stop}
-              onMouseLeave={autoplay.current.reset}
-              slideSize={"100%"}
+              // withControls={false}
+              slideSize={{ base: "100%", sm: "100%", md: "100%" }}
+              slidesToScroll={1}
               slideGap={"md"}
               align={"start"}
               initialSlide={selectedImage}

@@ -4,6 +4,7 @@ import Header from "../Header";
 import HeaderCategories from "../HeaderCategories";
 import { useEffect, useState } from "react";
 import { useGetAllCategoryQuery } from "@/store";
+import { useGetCategories } from "./GetCategories";
 
 export interface ICategory {
   id: string;
@@ -23,19 +24,7 @@ const initialValue: ICategory = {
 };
 
 export default function GroupedHeader() {
-  const [categories, setCategories] = useState<ICategory[]>([]);
-  const [activeLink, setActiveLink] = useState<ICategory>(initialValue);
-
-  const { data, error, isSuccess, isLoading, isError } = useGetAllCategoryQuery(
-    {}
-  );
-
-  useEffect(() => {
-    if (isSuccess) {
-      setCategories(data?.toReversed());
-      setActiveLink(categories[0]);
-    }
-  }, [isSuccess, isError]);
+  const { categories } = useGetCategories();
 
   return (
     <>
