@@ -30,7 +30,7 @@ export default function Page() {
             key={i}
             discount={product?.discount}
             id={product?.id}
-            imagePath={product?.imagePath}
+            imagePath={product?.mainImagePath}
             price={product?.price}
             isNew={product?.isNew}
             productName={product?.name || product?.productName}

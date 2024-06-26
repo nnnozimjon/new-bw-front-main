@@ -99,7 +99,7 @@ export default function Home() {
             key={i}
             discount={product?.discount}
             id={product?.id}
-            imagePath={product?.images?.[2] || product?.images?.[0]}
+            imagePath={product?.mainImagePath}
             price={product?.price}
             isNew={product?.isNew}
             productName={product?.name}

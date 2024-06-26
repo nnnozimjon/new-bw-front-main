@@ -12,4 +12,5 @@ export interface IProduct {
     productDate: Date
     count?: number
     rating: number
+    mainImagePath: string
 }
