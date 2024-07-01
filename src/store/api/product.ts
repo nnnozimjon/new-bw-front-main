@@ -13,7 +13,7 @@ export const productApi = createApi({
     }),
     getProductByFilter: build.query({
       query: (query) => ({
-        url: `/product/filtration${query}`,
+        url: `/product/filtration${query}&HideProduct=false`,
         method: "GET",
       }),
     }),
