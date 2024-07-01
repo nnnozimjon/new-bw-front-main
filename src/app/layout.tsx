@@ -94,8 +94,8 @@ export default function RootLayout({
         <Provider store={store}>
           <MantineProvider theme={theme} defaultColorScheme="light">
             <GroupedHeader />
-            <Container size={"xxl"} className="mt-[150px] md:mt-[20px]">
-              <Group visibleFrom="md" className="my-[20px]">
+            <Container size={"xxl"} className="mt-[20px] md:mt-[20px]">
+              <Group className="my-[20px]">
                 {primeLinks?.map((link, index) => (
                   <Button
                     key={index}

@@ -1,6 +1,7 @@
 "use client";
 
 import { EmptyPlaceholder } from "@/components";
+import { ICategory } from "@/components/GroupedHeader";
 import { useGetCategories } from "@/components/GroupedHeader/GetCategories";
 import { CommentModal } from "@/modals/comment-modal";
 import {
@@ -35,10 +36,18 @@ import {
   Text,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { AnyMxRecord } from "dns";
 import Autoplay from "embla-carousel-autoplay";
 import Head from "next/head";
 import { useParams } from "next/navigation";
-import { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import {
+  Fragment,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
 import { FaHeart, FaRegHeart } from "react-icons/fa";
 import { useSelector } from "react-redux";
 
@@ -180,29 +189,67 @@ export default function Page() {
     }
   );
 
-  function findCategoryById(categories: any[], id: string) {
-    for (let category of categories) {
-      if (category?.id == id) {
-        return category;
-      }
-      // Recursively search in subcategories
-      const found: any = findCategoryById(category?.subCategories, id);
-      if (found) {
-        return found;
-      }
-    }
-    return null;
-  }
-  const productCategory = findCategoryById(categories, product?.categoryId);
+  const breadCrumb = useMemo(() => {
+    function flattenCategories(
+      categories: ICategory[],
+      parentId: null | string = null
+    ) {
+      let result: ICategory[] = [];
 
-  console.log(productCategory);
+      categories?.forEach((category: ICategory) => {
+        let newCategory = { ...category, parentId: parentId };
+        // @ts-ignore
+        delete newCategory.subCategories;
+        result.push(newCategory);
+
+        if (category.subCategories && category.subCategories.length > 0) {
+          result = result.concat(
+            flattenCategories(category.subCategories, category.id)
+          );
+        }
+      });
+
+      return result;
+    }
+
+    const flattenedCategories = flattenCategories(categories);
+
+    const getCat = (id: string, data: any[]) => {
+      const child = data?.find((item: any) => item?.id === id);
+      const parentId = child?.parentId;
+      const parent = data?.find((item: any) => item?.id === parentId);
+
+      return { parent: parent?.id !== undefined ? parent : null, child };
+    };
+
+    const breadCrumb = getCat(product?.categoryId, flattenedCategories);
+
+    return breadCrumb;
+  }, [product, categories]);
 
   const items = [
     { title: "Главная", href: "/" },
-    { title: productCategory?.name, href: "/category/" + productCategory?.id },
-    { title: product?.name },
+    ...(breadCrumb?.parent !== null
+      ? [
+          {
+            title: breadCrumb?.parent?.name,
+            href: "/category/" + breadCrumb?.parent?.id,
+          },
+        ]
+      : []),
+    {
+      title: breadCrumb?.child?.name,
+      href: "/category/" + breadCrumb?.child?.id,
+    },
   ].map((item, index) => (
-    <Anchor href={item.href} className={`${!item?.href && 'text-[gray] no-underline hover:no-underline cursor-default'}`} key={index}>
+    <Anchor
+      href={item.href}
+      className={`${
+        !item?.href &&
+        "text-[gray] no-underline hover:no-underline cursor-default"
+      }`}
+      key={index}
+    >
       {item.title}
     </Anchor>
   ));
