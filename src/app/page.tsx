@@ -66,6 +66,7 @@ export default function Home() {
           onMouseEnter={autoplay.current.stop}
           onMouseLeave={autoplay.current.reset}
           className="mb-[60px]"
+          controlSize={40}
         >
           {banners?.map((banner: IBanner, index: number) => (
             <Carousel.Slide key={index}>
