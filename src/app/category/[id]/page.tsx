@@ -24,6 +24,8 @@ import Head from "next/head";
 export default function Page() {
   const params = useParams();
   const categoryId = params.id;
+  const brandId = params?.brandId;
+
 
   const { data: dataCategories, isSuccess: isSuccessCategories } =
     useGetAllCategoryQuery({});
@@ -39,7 +41,7 @@ export default function Page() {
 
   const { data, error, isSuccess, isError, isLoading, refetch } =
     useGetProductByFilterQuery(
-      ObjectToQuery({ categoryId, pageSize, pageNumber, sort })
+      ObjectToQuery({ categoryId, pageSize, pageNumber, sort, brandId })
     );
 
   useEffect(() => {

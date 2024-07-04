@@ -15,6 +15,7 @@ export default function Page() {
 
   const searchText = searchParams.get("q");
   const categoryId = searchParams.get("categoryId");
+  const brandId = searchParams.get("brandId");
 
   const [pageSize, setPageSize] = useState(20);
   const [pageNumber, setPageNumber] = useState(1);
@@ -32,6 +33,7 @@ export default function Page() {
         pageSize,
         pageNumber,
         sort,
+        brandId
       })
     );
 
