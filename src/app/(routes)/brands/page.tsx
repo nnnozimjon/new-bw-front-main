@@ -49,7 +49,7 @@ export default function Page() {
         ))}
       </SimpleGrid>
 
-      <EmptyPlaceholder label="Нет брендов"/>
+      {brands?.length === 0 && isLoading == false && <EmptyPlaceholder label="Нет брендов"/>}
     </div>
   );
 }
