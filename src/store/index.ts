@@ -17,7 +17,7 @@ export {
   useLoginByEmailMutation,
 } from "./api/auth";
 
-export { useGetAllBannersQuery } from "./api/banner";
+export { useGetAllBannersQuery, useGetContactsQuery } from "./api/banner";
 
 export {
   useGetUserOrdersQuery,

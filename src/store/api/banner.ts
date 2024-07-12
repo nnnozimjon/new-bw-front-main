@@ -11,7 +11,13 @@ export const bannerApi = createApi({
         method: "GET",
       }),
     }),
+    getContacts: build.query({
+      query: () => ({
+        url: '/contacts',
+        method: "GET"
+      })
+    })
   }),
 });
 
-export const { useGetAllBannersQuery } = bannerApi;
+export const { useGetAllBannersQuery, useGetContactsQuery } = bannerApi;

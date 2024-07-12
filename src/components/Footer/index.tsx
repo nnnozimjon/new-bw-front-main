@@ -25,12 +25,15 @@ import { RootState } from "@/store/store";
 import { useSelector } from "react-redux";
 import { LoginModal } from "@/modals/login-modal";
 import { useDisclosure } from "@mantine/hooks";
+import { useGetContactsQuery } from "@/store";
 
 export default function Footer() {
   const redirect = (href: string) => window.location.replace(href);
   const favorites = useSelector(
     (state: RootState) => state?.favorites?.favorites
   );
+
+  const { data: contacts } = useGetContactsQuery({});
 
   const [openedModal, { open: openModal, close: closeModal }] =
     useDisclosure(false);
@@ -41,6 +44,14 @@ export default function Footer() {
     (state: RootState) => state?.user.user.isAuth
   );
 
+  const goToLink = (href: string) => {
+    let url = href;
+    if (url && !/^https?:\/\//i.test(url)) {
+      url = "https://" + url;
+    }
+    window.open(url, "_blank");
+  };
+
   return (
     <footer className={classes.footer}>
       <Container className={""}>
@@ -50,17 +61,14 @@ export default function Footer() {
           </Text>
           <Flex align={"center"} gap={"sm"} className="mb-3">
             <FaPhoneAlt size={24} />
-            <a href="tel: +992933006969" className="no-underline">
-              +(992) 933006969
+            <a href={"tel:" + String(contacts?.phone)} className="no-underline">
+              {contacts?.phone}
             </a>
           </Flex>
           <Flex align={"center"} gap={"sm"} className="mt-3 mb-3">
             <IoMail size={24} />
-            <a
-              href="mailto:chistayaLiniya2022@gmail.com"
-              className="no-underline"
-            >
-              chistayaLiniya2022@gmail.com
+            <a href={"mailto:" + contacts?.email} className="no-underline">
+              {contacts?.email}
             </a>
           </Flex>
           <div className={""}>
@@ -68,11 +76,7 @@ export default function Footer() {
               О нас
             </Text>
             <Text size="xs" c="dimmed" className={classes.description}>
-              - это онлайн платформа, соединяющая товары и покупателей в одном
-              месте! У нас вы найдете тысячи товаров. Мы быстро и бережно
-              доставим ваш заказ до дверей вашего дома. Бесплатная доставка
-              доступна при заказе от 49 сомони. Покупка товаров в рассрочку,
-              возврат товара, гарантия от продавца.
+              {contacts?.about}
             </Text>
           </div>
         </div>
@@ -88,16 +92,31 @@ export default function Footer() {
           justify="flex-end"
           wrap="nowrap"
         >
-          <ActionIcon size="lg" color="gray" variant="subtle">
+          <ActionIcon
+            size="lg"
+            color="gray"
+            variant="subtle"
+            onClick={() => goToLink(contacts?.facebook)}
+          >
             <FaFacebook size={45} className="text-black hover:text-[#2A5FFE]" />
           </ActionIcon>
-          <ActionIcon size="lg" color="gray" variant="subtle">
+          <ActionIcon
+            size="lg"
+            color="gray"
+            variant="subtle"
+            onClick={() => goToLink(contacts?.instagram)}
+          >
             <FaInstagram
               size={45}
               className="text-black hover:text-[#2A5FFE]"
             />
           </ActionIcon>
-          <ActionIcon size="lg" color="gray" variant="subtle">
+          <ActionIcon
+            size="lg"
+            color="gray"
+            variant="subtle"
+            onClick={() => goToLink(contacts?.telegram)}
+          >
             <FaTelegram size={45} className="text-black hover:text-[#2A5FFE]" />
           </ActionIcon>
         </Group>
