@@ -2,6 +2,7 @@ import { useLoginMutation, useRegistrationMutation } from "@/store";
 import { pullCart, pushCart } from "@/store/actions/cart.actions";
 import { loginSuccess } from "@/store/slices/userSlice";
 import { RootState, useAppDispatch } from "@/store/store";
+import { formatPhoneNumber } from "@/utils/phoneNumberFormatter";
 import {
   Button,
   Flex,
@@ -49,7 +50,7 @@ export const LoginModal = ({ onClose, opened }: IProps) => {
       setError("Введите корректный номер");
       return () => {};
     }
-    register({ phoneNumber });
+    register({ phoneNumber: cleanedPhoneNumber });
   };
 
   const handleLogin = () => {
@@ -60,7 +61,7 @@ export const LoginModal = ({ onClose, opened }: IProps) => {
       return () => {};
     }
 
-    login({ phoneNumber });
+    login({ phoneNumber: cleanedPhoneNumber });
   };
 
   useEffect(() => {
@@ -88,7 +89,7 @@ export const LoginModal = ({ onClose, opened }: IProps) => {
       };
 
       pullCartFunc();
-      window.location.reload();
+      onClose()
     }
   }, [isSuccessLogin]);
 
@@ -111,7 +112,7 @@ export const LoginModal = ({ onClose, opened }: IProps) => {
             placeholder="+992xxxxxxxxx"
             label="Введите номер телефона"
             classNames={{ input: "h-[40px] text-[1rem] font-bold" }}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={(e) => setPhoneNumber(formatPhoneNumber(e.target.value))}
           />
           <br />
           <Text className="text-[0.875rem] text-[red] mb-2">
@@ -141,13 +142,13 @@ export const LoginModal = ({ onClose, opened }: IProps) => {
             Регистрация
           </Text>
           <InputBase
-            type="number"
+            // type="number"
             value={phoneNumber}
             placeholder="+992xxxxxxxxx"
             label="Введите номер телефона"
             error={error}
             classNames={{ input: "h-[40px] text-[1rem] font-bold" }}
-            onChange={(e) => setPhoneNumber(e.target.value)}
+            onChange={(e) => setPhoneNumber(formatPhoneNumber(e.target.value))}
           />
           <br />
           <Flex gap={"md"} direction={"column"}>

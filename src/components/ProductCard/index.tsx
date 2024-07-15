@@ -189,7 +189,7 @@ export default function ProductCard({
             </Text>
           )}
 
-          {discount && (
+          {discount !== 0 && (
             <Badge
               size="sm"
               variant="gradient"

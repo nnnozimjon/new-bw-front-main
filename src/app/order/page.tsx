@@ -7,6 +7,7 @@ import {
   useGetAllDeliveryTypesQuery,
   useGetAllPaymentTypesQuery,
 } from "@/store";
+import { logout } from "@/store/slices/userSlice";
 import { RootState, useAppDispatch } from "@/store/store";
 import { redirect } from "@/utils";
 import { IProduct } from "@/utils/types";
@@ -82,7 +83,14 @@ export default function Page() {
     }
 
     if (isError) {
-      setErrorText((error as any)?.data?.Message);
+      console.log(error)
+      if((error as any)?.originalStatus == 401) {
+        setErrorText((error as any)?.data);
+        setTimeout(() => {
+          dispatch(logout())
+        },1500)
+      }
+      else setErrorText((error as any)?.data?.Message);
     }
   }, [isSuccess, isError]);
 
