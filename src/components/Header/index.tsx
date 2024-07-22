@@ -10,6 +10,8 @@ import {
   Box,
   Drawer,
   Indicator,
+  Modal,
+  Accordion,
 } from "@mantine/core";
 import { Logo } from "..";
 import { FaList, FaRegHeart, FaRegUser, FaStar } from "react-icons/fa";
@@ -26,6 +28,7 @@ import { useSelector } from "react-redux";
 import { RootState, useAppDispatch } from "@/store/store";
 import { logout } from "@/store/slices/userSlice";
 import { ICategory } from "../GroupedHeader";
+import { redirect } from "@/utils";
 
 interface IDrawerLinks {
   group: string;
@@ -66,11 +69,6 @@ const drawerLinks: IDrawerLinks[] = [
     group: "Магазин",
     links: [
       {
-        label: "Категории",
-        icon: <FaList size={"18px"} />,
-        href: "",
-      },
-      {
         label: "Новые товары",
         icon: <FaSquarePlus size={"18px"} />,
         href: "/new",
@@ -93,6 +91,26 @@ interface IProps {
   categories: ICategory[];
 }
 
+const CategoryComponent = ({ categories }: { categories: ICategory[] }) => {
+  return (
+    <Accordion
+      classNames={{ item: "border-none bg-transparent" }}
+      variant="contained"
+    >
+      {categories?.map((category: ICategory) =>
+        <Accordion.Item key={category?.id} value={category?.id}>
+          <Accordion.Control>
+            <a href={"/category/" + category.id} className="no-underline text-black text-[18px]">{category.name}</a>
+          </Accordion.Control>
+          <Accordion.Panel>
+            <CategoryComponent categories={category.subCategories} />
+          </Accordion.Panel>
+        </Accordion.Item>
+      )}
+    </Accordion>
+  );
+};
+
 export default function Header({ categories }: IProps) {
   const dispatch = useAppDispatch();
 
@@ -110,6 +128,7 @@ export default function Header({ categories }: IProps) {
     useDisclosure(false);
 
   const [opened, { open, close }] = useDisclosure(false);
+  const [openedCategory, { open: openCategories, close: closeCategories }] = useDisclosure(false);
 
   const redirect = (href: string) => window.location.replace(href);
 
@@ -129,7 +148,6 @@ export default function Header({ categories }: IProps) {
             className="w-fit shrink-0 flex items-center gap-[30px]"
           >
             <Logo />
-           
           </Box>
           <Box hiddenFrom="md" className="flex items-center">
             <CgMenuLeft size={24} className="cursor-pointer" onClick={open} />
@@ -261,6 +279,21 @@ export default function Header({ categories }: IProps) {
                   className="rounded-lg text-center h-[50px] mb-4"
                 />
               ))}
+              <NavLink
+                key={index}
+                variant="filled"
+                bg={"white"}
+                onClick={openCategories}
+                label={
+                  <Flex align={"center"} justify={"center"} gap={"sm"}>
+                    <FaList />
+                    <Text className="text-[1.125rem] text-[#212121]">
+                      Категории
+                    </Text>
+                  </Flex>
+                }
+                className="rounded-lg text-center h-[50px] mb-4"
+              />
               <br />
               <br />
             </Fragment>
@@ -287,6 +320,19 @@ export default function Header({ categories }: IProps) {
       </Drawer>
 
       <LoginModal onClose={closeModal} opened={openedModal} />
+
+      <Drawer
+        size={"100%"}
+        opened={openedCategory}
+        onClose={closeCategories}
+        withCloseButton={true}
+        className="z-[1000] fixed w-screen h-screen"
+        overlayProps={{ backgroundOpacity: 0.5, blur: 4 }}
+      >
+        <Drawer.Body className="!m-0 !p-0">
+          <CategoryComponent categories={categories} />
+        </Drawer.Body>
+      </Drawer>
     </header>
   );
 }
